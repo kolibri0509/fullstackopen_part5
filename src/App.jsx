@@ -5,6 +5,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
@@ -15,11 +16,23 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('userInfo')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
    
     try{
       const user = await loginService.login({username, password})
+
+      window.localStorage.setItem('userInfo', JSON.stringify(user))
+    
       setUser(user)
       setPassword('')
       setUsername('')
@@ -56,6 +69,11 @@ const App = () => {
       <button type="submit">login</button>
     </form>      
   )
+  
+  const logout = () => {
+    window.localStorage.removeItem('userInfo')
+    location.reload()
+  }
 
   const blogForm = () => {
     return (
@@ -65,6 +83,7 @@ const App = () => {
         <ul>
           {blogs.map(blog =><li key={blog.id}>{<Blog key={blog.id} blog={blog} />}</li>)}
         </ul>
+        <button onClick={logout}>logout</button>
       </>
     )
   }
