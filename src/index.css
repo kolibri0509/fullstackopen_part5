@@ -1,0 +1,18 @@
+.notification {
+    background-color: rgb(194, 194, 194);
+    border: solid 1px green;
+    color: green;
+    min-width: 30px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.error {
+    background-color: rgb(194, 194, 194);
+    border: solid 1px red;
+    color:red;
+    min-width: 30px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
