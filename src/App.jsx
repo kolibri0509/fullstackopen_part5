@@ -83,12 +83,15 @@ const App = () => {
   }
 
   const blogForm = () => {
+    const listStyle = {
+      listStyleType:'none'
+    }
     return (
       <>
         <h2>blogs</h2>
         <p>{user.name} logged in</p>
         <button onClick={logout}>logout</button>
-        <ul>
+        <ul style={listStyle}>
           {blogs.map(blog =><li key={blog.id}>{<Blog key={blog.id} blog={blog} />}</li>)}
         </ul>
       </>
