@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => 
       setBlogs( blogs )
-    )  
+    )   
   }, [])
 
   useEffect(() => {
@@ -36,7 +36,6 @@ const App = () => {
    
     try{
       const user = await loginService.login({username, password})
-
       window.localStorage.setItem('userInfo', JSON.stringify(user))
       
       blogService.setToken(user.token)
@@ -82,6 +81,11 @@ const App = () => {
     location.reload()
   }
 
+  const addLike = (id, blogObject) => {
+    console.log(blogObject)
+    blogService.update(id, blogObject)
+  }
+
   const blogForm = () => {
     const listStyle = {
       listStyleType:'none'
@@ -92,7 +96,9 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick={logout}>logout</button>
         <ul style={listStyle}>
-          {blogs.map(blog =><li key={blog.id}>{<Blog key={blog.id} blog={blog} />}</li>)}
+          {blogs.map(blog =><li key={blog.id}>
+            {<Blog
+            blog={blog} updateBlog={addLike}/>}</li>)}
         </ul>
       </>
     )
