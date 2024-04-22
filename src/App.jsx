@@ -14,6 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
+  const [sortByLikes, setSortByLikes] = useState(false)
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -85,6 +86,17 @@ const App = () => {
     console.log(blogObject)
     blogService.update(id, blogObject)
   }
+  const shuffle = (arr) => {
+    const newArr = [...arr];    
+    for (let i = newArr.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+    }
+    return newArr;
+  };
+  const showBlogs = sortByLikes ?
+    blogs.sort((a,b) => b.likes - a.likes )
+    : shuffle(blogs)
 
   const blogForm = () => {
     const listStyle = {
@@ -96,7 +108,7 @@ const App = () => {
         <p>{user.name} logged in</p>
         <button onClick={logout}>logout</button>
         <ul style={listStyle}>
-          {blogs.map(blog =><li key={blog.id}>
+          {showBlogs.map(blog =><li key={blog.id}>
             {<Blog
             blog={blog} updateBlog={addLike}/>}</li>)}
         </ul>
@@ -118,15 +130,21 @@ const App = () => {
         </Togglable>                 
     )
   }
-
   return (
     <div> 
       <Error message={errorMessage}/>  
       {user === null && loginForm()}
       
       <Notification message={message}/>
-      {user !== null && <div>
-        {blogForm()} {createBlog()}</div>}
+      {user !== null && 
+        <div>
+          {blogForm()}
+          <button onClick={()=> setSortByLikes(!sortByLikes)}>
+             {sortByLikes ? 'random' : 'sort by likes'}
+          </button>
+          {createBlog()}
+        </div>
+      }
     </div>
   )
 }
