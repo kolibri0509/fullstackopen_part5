@@ -18,12 +18,13 @@ const Blog = ({ blog, updateBlog }) => {
   const handleClick =  (id) => {
     setLikes(l => l + 1)
     const blogObject = {
-      user: blog.user.id,
+      user: blog.user,
       title: blog.title,
       author: blog.author,
       url: blog.url,
       likes: likes + 1
     }
+    console.log(blogObject)
     updateBlog(id,blogObject )
   }
 
