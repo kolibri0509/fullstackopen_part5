@@ -18,7 +18,7 @@ const Blog = ({ blog, updateBlog }) => {
   const handleClick =  (id) => {
     setLikes(l => l + 1)
     const blogObject = {
-      user: blog.user,
+      user: blog.user.id,
       title: blog.title,
       author: blog.author,
       url: blog.url,
