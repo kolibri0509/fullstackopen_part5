@@ -1,5 +1,5 @@
 import { useState } from "react"
-const CreateBlogForm = ({createBlog}) => {
+const CreateBlogForm = ({createBlog, user}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -7,7 +7,7 @@ const CreateBlogForm = ({createBlog}) => {
   const addBlog = (event) => {
     event.preventDefault()
     if(title.length > 0 && author.length > 0
-      && url.length > 0){
+      && url.length > 0 && author == user.username){
        createBlog({
           title: title,
           author: author,
@@ -15,6 +15,9 @@ const CreateBlogForm = ({createBlog}) => {
           likes: 0
         })
       }
+    if(author.length > 0 && author != user.username){
+      alert("In the author field, enter the username")
+    }
     setTitle('')
     setAuthor('')
     setUrl('')

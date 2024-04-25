@@ -82,10 +82,16 @@ const App = () => {
     location.reload()
   }
 
+  const deleteBlog = (id) => {  
+      blogService.remove(id)
+      setBlogs(blogs.filter(blog => blog.id != id))    
+  }
+
   const addLike = (id, blogObject) => {
     console.log(blogObject)
     blogService.update(id, blogObject)
   }
+
   const shuffle = (arr) => {
     const newArr = [...arr];    
     for (let i = newArr.length-1; i > 0; i--) {
@@ -94,6 +100,7 @@ const App = () => {
     }
     return newArr;
   };
+
   const showBlogs = sortByLikes ?
     blogs.sort((a,b) => b.likes - a.likes )
     : shuffle(blogs)
@@ -110,11 +117,13 @@ const App = () => {
         <ul style={listStyle}>
           {showBlogs.map(blog =><li key={blog.id}>
             {<Blog
-            blog={blog} updateBlog={addLike}/>}</li>)}
+            blog={blog} updateBlog={addLike} 
+            deleteBlog={deleteBlog} user={user}/>}</li>)}
         </ul>
       </>
     )
   }
+
   const addBlog = (blogObject) =>{
     blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then(returnedBlog =>
@@ -126,10 +135,11 @@ const App = () => {
   const createBlog = () => {
     return (
         <Togglable buttonLabel='new blog' ref={blogFormRef}>
-          <CreateBlogForm createBlog={addBlog}/>
+          <CreateBlogForm createBlog={addBlog} user={user}/>
         </Togglable>                 
     )
   }
+  
   return (
     <div> 
       <Error message={errorMessage}/>  
