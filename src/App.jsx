@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
@@ -10,17 +10,17 @@ import Togglable from './components/Togglable'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [sortByLikes, setSortByLikes] = useState(false)
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs => 
+    blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )   
+    )
   }, [])
 
   useEffect(() => {
@@ -34,11 +34,11 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-   
+
     try{
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem('userInfo', JSON.stringify(user))
-      
+
       blogService.setToken(user.token)
       setUser(user)
       setPassword('')
@@ -57,7 +57,7 @@ const App = () => {
       <h2>log in to application</h2>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -66,7 +66,7 @@ const App = () => {
       </div> <br />
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -74,17 +74,17 @@ const App = () => {
         />
       </div> <br />
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
-  
+
   const logout = () => {
     window.localStorage.removeItem('userInfo')
     location.reload()
   }
 
-  const deleteBlog = (id) => {  
-      blogService.remove(id)
-      setBlogs(blogs.filter(blog => blog.id != id))    
+  const deleteBlog = (id) => {
+    blogService.remove(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
   }
 
   const addLike = (id, blogObject) => {
@@ -93,64 +93,66 @@ const App = () => {
   }
 
   const shuffle = (arr) => {
-    const newArr = [...arr];    
+    const newArr = [...arr]
     for (let i = newArr.length-1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+      [newArr[i], newArr[j]] = [newArr[j], newArr[i]]
     }
-    return newArr;
-  };
+    return newArr
+  }
 
   const showBlogs = sortByLikes ?
     blogs.sort((a,b) => b.likes - a.likes )
     : shuffle(blogs)
 
-  const blogForm = () => {
-    const listStyle = {
-      listStyleType:'none'
-    }
-    return (
-      <>
-        <h2>blogs</h2>
-        <p>{user.name} logged in</p>
-        <button onClick={logout}>logout</button>
-        <ul style={listStyle}>
-          {showBlogs.map(blog =><li key={blog.id}>
-            {<Blog
-            blog={blog} updateBlog={addLike} 
-            deleteBlog={deleteBlog} user={user}/>}</li>)}
-        </ul>
-      </>
-    )
-  }
+  // const blogForm = () => {
+  //   const listStyle = {
+  //     listStyleType:'none'
+  //   }
+  //   return (
+  //     <>
+  //       <h2>blogs</h2>
+  //       <p>{user.name} logged in</p>
+  //       <button onClick={logout}>logout</button>
+  //       <ul style={listStyle}>
+  //         {showBlogs.map(blog => <li key={blog.id}>
+  //           {<Blog
+  //             blog={blog} updateBlog={addLike}
+  //             deleteBlog={deleteBlog} user={user}/>}</li>)}
+  //       </ul>
+  //     </>
+  //   )
+  // }
 
-  const addBlog = (blogObject) =>{
+  const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then(returnedBlog =>
-    setBlogs(blogs.concat(returnedBlog)))
+      setBlogs(blogs.concat(returnedBlog)))
     setMessage('a new blog by added')
-    setTimeout(()=> setMessage(null),5000)
+    setTimeout(() => setMessage(null),5000)
   }
 
   const createBlog = () => {
     return (
-        <Togglable buttonLabel='new blog' ref={blogFormRef}>
-          <CreateBlogForm createBlog={addBlog} user={user}/>
-        </Togglable>                 
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <CreateBlogForm createBlog={addBlog} user={user}/>
+      </Togglable>
     )
   }
-  
+
   return (
-    <div> 
-      <Error message={errorMessage}/>  
+    <div>
+      <Error message={errorMessage}/>
       {user === null && loginForm()}
-      
+
       <Notification message={message}/>
-      {user !== null && 
+      {user !== null &&
         <div>
-          {blogForm()}
-          <button onClick={()=> setSortByLikes(!sortByLikes)}>
-             {sortByLikes ? 'random' : 'sort by likes'}
+          {/* {blogForm()} */}
+          <BlogForm user={user} logout={logout} showBlogs={showBlogs}
+            addLike={addLike} deleteBlog={deleteBlog}/>
+          <button onClick={() => setSortByLikes(!sortByLikes)}>
+            {sortByLikes ? 'random' : 'sort by likes'}
           </button>
           {createBlog()}
         </div>
