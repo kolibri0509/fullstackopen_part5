@@ -42,7 +42,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
           {blog.author}
         </div>
         <button onClick={visibility}>{viewHide}</button> <br></br>
-        <div style={displayStyle}>
+        <div style={displayStyle} className='hidden'>
           {blog.url} <br></br>
           {likes} <button onClick={() => handleClick(blog.id)}>like</button><br></br>
           {/* {blog.author === user.username &&

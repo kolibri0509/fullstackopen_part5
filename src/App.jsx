@@ -147,15 +147,15 @@ const App = () => {
 
       <Notification message={message}/>
       {user !== null &&
-        <div>
-          {/* {blogForm()} */}
-          <BlogForm user={user} logout={logout} showBlogs={showBlogs}
-            addLike={addLike} deleteBlog={deleteBlog}/>
-          <button onClick={() => setSortByLikes(!sortByLikes)}>
-            {sortByLikes ? 'random' : 'sort by likes'}
-          </button>
-          {createBlog()}
-        </div>
+      <div>
+        {/* {blogForm()} */}
+        <BlogForm user={user} logout={logout} showBlogs={showBlogs}
+          addLike={addLike} deleteBlog={deleteBlog}/>
+        <button onClick={() => setSortByLikes(!sortByLikes)}>
+          {sortByLikes ? 'random' : 'sort by likes'}
+        </button>
+        {createBlog()}
+      </div>
       }
     </div>
   )
