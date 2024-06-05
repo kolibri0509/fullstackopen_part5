@@ -2,13 +2,14 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
+const blog = {
+  title:'setBlogs',
+  author:'kolibri0509',
+  url:'https://github.com/kolibri0509',
+  likes:2
+}
+
 describe('<Blog />', () => {
-  const blog = {
-    title:'setBlogs',
-    author:'kolibri0509',
-    url:'https://github.com/kolibri0509',
-    likes:2
-  }
   let container
 
   beforeEach(() => {
@@ -40,4 +41,16 @@ describe('<Blog />', () => {
     const div = container.querySelector('.hidden')
     expect(div).not.toHaveStyle('display: none')
   })
+})
+test('Clicking the button calls the event handler twice', async () => {
+  const mockHandler = vi.fn()
+
+  render(<Blog blog={blog} handleClick={mockHandler}/>)
+
+  const user = userEvent.setup()
+  const buttonTwo = screen.getByText('like')
+  await user.click(buttonTwo)
+  await user.click(buttonTwo)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
