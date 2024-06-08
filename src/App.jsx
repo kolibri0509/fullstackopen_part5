@@ -105,25 +105,6 @@ const App = () => {
     blogs.sort((a,b) => b.likes - a.likes )
     : shuffle(blogs)
 
-  // const blogForm = () => {
-  //   const listStyle = {
-  //     listStyleType:'none'
-  //   }
-  //   return (
-  //     <>
-  //       <h2>blogs</h2>
-  //       <p>{user.name} logged in</p>
-  //       <button onClick={logout}>logout</button>
-  //       <ul style={listStyle}>
-  //         {showBlogs.map(blog => <li key={blog.id}>
-  //           {<Blog
-  //             blog={blog} updateBlog={addLike}
-  //             deleteBlog={deleteBlog} user={user}/>}</li>)}
-  //       </ul>
-  //     </>
-  //   )
-  // }
-
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then(returnedBlog =>
@@ -148,7 +129,6 @@ const App = () => {
       <Notification message={message}/>
       {user !== null &&
       <div>
-        {/* {blogForm()} */}
         <BlogForm user={user} logout={logout} showBlogs={showBlogs}
           addLike={addLike} deleteBlog={deleteBlog}/>
         <button onClick={() => setSortByLikes(!sortByLikes)}>

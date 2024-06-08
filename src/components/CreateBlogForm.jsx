@@ -7,7 +7,10 @@ const CreateBlogForm = ({ createBlog, user }) => {
   const addBlog = (event) => {
     event.preventDefault()
     if(title.length > 0 && author.length > 0
-      && url.length > 0 && author === user.username){
+      && url.length > 0
+      && author === user.username
+    )
+    {
       createBlog({
         title: title,
         author: author,
@@ -27,15 +30,18 @@ const CreateBlogForm = ({ createBlog, user }) => {
       <h2>create new</h2>
       <div>
           title: <input type="text" value={title} name='Title'
-          onChange={event => setTitle(event.target.value)}/>
+          onChange={event => setTitle(event.target.value)}
+          placeholder='write text here'/>
       </div>
       <div>
           author: <input type="text" value={author} name='Author'
-          onChange={event => setAuthor(event.target.value)} />
+          onChange={event => setAuthor(event.target.value)}
+          placeholder='write your name here'/>
       </div>
       <div>
           url: <input type="text" value={url} name='Url'
-          onChange={event => setUrl(event.target.value)} />
+          onChange={event => setUrl(event.target.value)}
+          placeholder='write your url here'/>
       </div>
       <button type='submit'>create</button>
     </form>
