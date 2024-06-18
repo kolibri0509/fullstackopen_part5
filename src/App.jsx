@@ -58,6 +58,7 @@ const App = () => {
       <div>
         username
         <input
+          data-testid='username'
           type="text"
           value={username}
           name="Username"
@@ -67,13 +68,14 @@ const App = () => {
       <div>
         password
         <input
+          data-testid='password'
           type="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div> <br />
-      <button type="submit">login</button>
+      <button type="submit">log in</button>
     </form>
   )
 
@@ -88,7 +90,6 @@ const App = () => {
   }
 
   const addLike = (id, blogObject) => {
-    console.log(blogObject)
     blogService.update(id, blogObject)
   }
 
@@ -129,6 +130,8 @@ const App = () => {
       <Notification message={message}/>
       {user !== null &&
       <div>
+        <p>{user.name} logged in</p>
+        <button onClick={logout}>logout</button>
         <BlogForm user={user} logout={logout} showBlogs={showBlogs}
           addLike={addLike} deleteBlog={deleteBlog}/>
         <button onClick={() => setSortByLikes(!sortByLikes)}>

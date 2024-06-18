@@ -6,8 +6,6 @@ const BlogForm = ({ user,logout,showBlogs,addLike,deleteBlog }) => {
   return (
     <>
       <h2>blogs</h2>
-      <p>{user.name} logged in</p>
-      <button onClick={logout}>logout</button>
       <ul style={listStyle}>
         {showBlogs.map(blog =>
           <li key={blog.id}>
